@@ -8,26 +8,26 @@ def run_generation(mol_path, surf_path, output_dir="results"):
 
     os.makedirs(output_dir, exist_ok=True)
 
-    print(f"📦 Copying molecule: {mol_path} → data/HB238.xyz")
-    os.system(f"cp {mol_path} data/HB238.xyz")
+    print(f"Copying molecule: {mol_path} → data/molecule.xyz")
+    os.system(f"cp {mol_path} data/molecule.xyz")
 
-    print(f"🧱 Copying surface: {surf_path} → data/Ag.inp")
-    os.system(f"cp {surf_path} data/Ag.inp")
+    print(f"Copying surface: {surf_path} → data/surface.inp")
+    os.system(f"cp {surf_path} data/surface.inp")
 
-    print("🚀 Running BOSS + MACE training structure generation...")
-    os.system("python3 adsgen/Ag.py")
+    print("Running BOSS + MACE training structure generation...")
+    run_boss_mace()
 
     rst_file = os.path.join(output_dir, "boss.rst")
     traj_file = os.path.join(output_dir, "5D_optimization_trajectory.traj")
 
     if os.path.exists(rst_file):
-        print("📊 Plotting energy vs. step using boss.rst")
+        print("Plotting energy vs. step using boss.rst")
         plot_energy_from_rst(rst_file, os.path.join(output_dir, "boss_energy_vs_step.png"))
     else:
         print("⚠️ boss.rst not found — skipping plot.")
 
     if os.path.exists(traj_file):
-        print(f"✅ Final trajectory written to {traj_file}")
+        print(f"Final trajectory written to {traj_file}")
     else:
         print("⚠️ Final trajectory file not found!")
 
