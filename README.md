@@ -26,7 +26,7 @@ Clone and install in development mode:
 git clone https://github.com/TomarRitu25/adsgen.git
 cd adsgen
 pip install -e .
-
+```
 ---
 
 ## 1. Generate Training Structures
@@ -35,6 +35,7 @@ This step runs BOSS + MACE to optimize molecular configurations on a surface.
 
 ```bash
 adsgen-generate --mol data/HB238.xyz --surf data/Ag.inp
+```
 
 This produces:
 - results/boss.rst
@@ -48,16 +49,17 @@ This produces:
 
 ```bash
 adsgen-vaspgen --traj results/5D_optimization_trajectory.traj
-
+```
 **Note:** You must place the INCAR, KPOINTS and POTCAR files in the current working directory before running this command
 
 ---
 
 ## 3. Compare MACE and DFT Energies
 
-After you run DFT calculations in the vasp_inputs/conf_*/ folders, you can compare the energies using:
+After you run DFT calculations in the vasp_inputs/conf_* folders, you can compare the energies using:
 ```bash
 adsgen-compare --traj results/5D_optimization_trajectory.traj --dft-dir vasp_inputs --out results/E0_comparison_plot.png
+```
 
 This generates:
 - mace_extracted_energies.txt
@@ -68,10 +70,6 @@ This generates:
 ---
 
 ## Requirements
-* Python 3.9+
-* Dependencies: ase, numpy, matplotlib
-* External:
-    - BOSS
-    - MACE
-    - VASP (license required)
-
+- Python ≥ 3.10 (required for aalto-boss)
+- PyTorch (compatible version required for mace-torch)
+- External: VASP (not bundled - licence required)
