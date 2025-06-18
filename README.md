@@ -1,127 +1,77 @@
 # adsgen
 
-**Machine learning–driven training data generation for adsorption modeling using BOSS and MACE.**
+Machine learning–driven training structure generator for adsorption on surfaces.
 
-This program enables the generation of high-quality 5D adsorption structures using Bayesian optimization (BOSS) and the MACE machine-learned potential. The goal is to accelerate the development of ML potentials for molecule–surface systems. Additionally, it includes utilities to export optimized configurations for DFT calculations and compare MACE vs. DFT energies.
+This program enables the generation of adsorption geometries using Bayesian optimization with BOSS and a pretrained MACE machine learning potential. It also provides tools to convert these geometries into VASP input folders and compare MACE-predicted energies against DFT values using RMSE, MAE, and energy plots.
 
 ---
 
 ## Introduction
 
-This repository contains two major functionalities:
+This repository contains three key functionalities:
 
-- **Structure generation pipeline** based on BOSS + MACE  
-- **Energy comparison framework** between MACE and DFT
+1. Generation of adsorption structures using BOSS + MACE
+2. Conversion of optimized `.traj` files to VASP-ready input folders
+3. Energy comparison between MACE and DFT using a plotting and CSV export tool
 
-The procedure typically involves the following steps:
-
-1. Running BOSS + MACE to optimize molecular configurations over a surface.
-2. Exporting the resulting structures to VASP-compatible folders.
-3. Comparing predicted MACE energies against DFT-calculated values for the same geometries.
-
-⚠️ VASP calculations must be performed externally. The project assumes `INCAR`, `KPOINTS`, and `POTCAR` are available and copied into the working directory manually.
+The goal is to assist in generating large, diverse, and relevant training datasets for ML potential development, particularly for molecule–surface systems.
 
 ---
 
 ## Installation
 
-Clone and install locally in development mode:
+Clone and install in development mode:
 
 ```bash
 git clone https://github.com/TomarRitu25/adsgen.git
 cd adsgen
 pip install -e .
 
-This will register the following CLI tools:
+---
 
-    adsgen-generate
+## 1. Generate Training Structures
 
-    adsgen-vaspgen
-
-    adsgen-compare
-
-## Usage
-
-**1. Generate Training Structures (BOSS + MACE)**
-
-This step copies your molecule and surface files, runs BOSS with MACE as energy backend, and produces a .traj file with optimized geometries.
+This step runs BOSS + MACE to optimize molecular configurations on a surface.
 
 ```bash
 adsgen-generate --mol data/HB238.xyz --surf data/Ag.inp
 
-Outputs:
+This produces:
+- results/boss.rst
+- results/5D_optimization_trajectory.traj
+- results/initial_configurations.xyz
+- results/boss_energy_vs_step.png
 
-    - results/boss.rst
+---
 
-    - results/boss_energy_vs_step.png
-
-    - results/5D_optimization_trajectory.traj
-
-    - results/initial_configurations.xyz
-
-## **2. Convert .traj to VASP Input Folders**
-
-Once the optimized .traj is generated, use this to create VASP input directories:
+## 2. Convert .traj to VASP Input Folders
 
 ```bash
 adsgen-vaspgen --traj results/5D_optimization_trajectory.traj
 
-⚠️ **Required:** Place these files in the working directory before running:
+**Note:** You must place the INCAR, KPOINTS and POTCAR files in the current working directory before running this command
 
-    INCAR
+---
 
-    KPOINTS
+## 3. Compare MACE and DFT Energies
 
-    POTCAR
-
-**Output (per structure):**
+After you run DFT calculations in the vasp_inputs/conf_*/ folders, you can compare the energies using:
 ```bash
-vasp_inputs/conf_000/
-├── POSCAR
-├── INCAR
-├── KPOINTS
-└── POTCAR
+adsgen-compare --traj results/5D_optimization_trajectory.traj --dft-dir vasp_inputs --out results/E0_comparison_plot.png
 
-## **3. Compare MACE and DFT Energies**
+This generates:
+- mace_extracted_energies.txt
+- dft_extracted_energies.txt
+- E0_comparison_plot.png
+- E0_comparison_plot.csv
 
-Once DFT calculations are complete for all conf_* folders, use:
+---
 
-```bash
-adsgen-compare \
-  --traj results/5D_optimization_trajectory.traj \
-  --dft-dir vasp_inputs \
-  --out results/E0_comparison_plot.png
+## Requirements
+* Python 3.9+
+* Dependencies: ase, numpy, matplotlib
+* External:
+    - BOSS
+    - MACE
+    - VASP (license required)
 
-Outputs:
-
-    - mace_extracted_energies.txt
-
-    - dft_extracted_energies.txt
-
-    - results/E0_comparison_plot.png
-
-    - results/E0_comparison_plot.csv
-
-Also prints:
-
-    RMSE and MAE between MACE and DFT energies
-
-**Requirements**
-
-    - Python 3.9+
-
-    - Dependencies:
-        - ase
-        - numpy
-        - matplotlib
-
-    - External tools (not bundled):
-        - BOSS
-        - MACE
-        - VASP (must be pre-installed and licensed)
-
-
-## **Citation**
-
-This code was developed for machine-learning-assisted catalyst design involving large flexible molecules on surfaces.
-Please cite relevant BOSS, MACE, and VASP references if you use this pipeline in a publication.
