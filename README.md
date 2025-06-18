@@ -40,30 +40,33 @@ This will register the following CLI tools:
 
     adsgen-compare
 
-Usage
-1. Generate Training Structures (BOSS + MACE)
+## Usage
+
+**1. Generate Training Structures (BOSS + MACE)**
 
 This step copies your molecule and surface files, runs BOSS with MACE as energy backend, and produces a .traj file with optimized geometries.
 
+```bash
 adsgen-generate --mol data/HB238.xyz --surf data/Ag.inp
 
 Outputs:
 
-    results/boss.rst
+    - results/boss.rst
 
-    results/boss_energy_vs_step.png
+    - results/boss_energy_vs_step.png
 
-    results/5D_optimization_trajectory.traj
+    - results/5D_optimization_trajectory.traj
 
-    results/initial_configurations.xyz
+    - results/initial_configurations.xyz
 
-2. Convert .traj to VASP Input Folders
+## **2. Convert .traj to VASP Input Folders**
 
 Once the optimized .traj is generated, use this to create VASP input directories:
 
+```bash
 adsgen-vaspgen --traj results/5D_optimization_trajectory.traj
 
-⚠️ Required: Place these files in the working directory before running:
+⚠️ **Required:** Place these files in the working directory before running:
 
     INCAR
 
@@ -71,18 +74,19 @@ adsgen-vaspgen --traj results/5D_optimization_trajectory.traj
 
     POTCAR
 
-Output (per structure):
-
+**Output (per structure):**
+```bash
 vasp_inputs/conf_000/
 ├── POSCAR
 ├── INCAR
 ├── KPOINTS
 └── POTCAR
 
-3. Compare MACE and DFT Energies
+## **3. Compare MACE and DFT Energies**
 
 Once DFT calculations are complete for all conf_* folders, use:
 
+```bash
 adsgen-compare \
   --traj results/5D_optimization_trajectory.traj \
   --dft-dir vasp_inputs \
@@ -90,51 +94,34 @@ adsgen-compare \
 
 Outputs:
 
-    mace_extracted_energies.txt
+    - mace_extracted_energies.txt
 
-    dft_extracted_energies.txt
+    - dft_extracted_energies.txt
 
-    results/E0_comparison_plot.png
+    - results/E0_comparison_plot.png
 
-    results/E0_comparison_plot.csv
+    - results/E0_comparison_plot.csv
 
 Also prints:
 
     RMSE and MAE between MACE and DFT energies
 
-Requirements
+**Requirements**
 
-    Python 3.9+
+    - Python 3.9+
 
-    Dependencies:
+    - Dependencies:
+        - ase
+        - numpy
+        - matplotlib
 
-        ase
+    - External tools (not bundled):
+        - BOSS
+        - MACE
+        - VASP (must be pre-installed and licensed)
 
-        numpy
 
-        matplotlib
-
-    External tools (not bundled):
-
-        BOSS
-
-        MACE
-
-        VASP (must be pre-installed and licensed)
-
-Data Folder Structure (after .traj → VASP conversion)
-
-vasp_inputs/
-├── conf_000/
-│   ├── POSCAR
-│   ├── INCAR
-│   ├── KPOINTS
-│   └── POTCAR
-├── conf_001/
-│   ├── ...
-...
-
-Citation
+## **Citation**
 
 This code was developed for machine-learning-assisted catalyst design involving large flexible molecules on surfaces.
 Please cite relevant BOSS, MACE, and VASP references if you use this pipeline in a publication.
