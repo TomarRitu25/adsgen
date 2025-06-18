@@ -1,0 +1,29 @@
+SYSTEM=adsorbate_surface
+
+Parallelization options
+
+Ausgabeparameter
+LWAVE =  .FALSE.  ! do not write WAVECAR file
+LCHARG = .FALSE.  ! do not write CHGCAR file
+
+Global settings
+ISYM = 1          ! 1,2=use symmetry, 0 = no symmetry
+LREAL = Auto     ! .TRUE. real-space projection large SC
+ GGA = PE          ! PE=PBE RP=revised PBE PS=PBEsol
+ IVDW = 12         ! D3
+
+Electronic minimisation
+ENCUT = 400        ! cutoff energy eV
+
+DOS related values
+ISMEAR = 2        ! -4-tet -1-fermi 1=Methfessel/Paxton 1.order 0=Gauss
+SIGMA = 0.2       ! broadening in eV
+
+Ionic relaxation
+IBRION = 2        ! 2=Conjugated Gradients 1=DIIS
+POTIM = 0.5       ! For IBRION=2 POTIM serves as scaling constant for the forces
+ISIF = 0          ! atom relaxation
+EDIFF  = 1.0E-06  ! energy stopping-criterion for electr. iterations eV
+EDIFFG = -0.01   ! force stopping-criterion for geometry steps eV/A
+NSW = 2         ! Number of opt steps
+ADDGRID = .TRUE.  !
