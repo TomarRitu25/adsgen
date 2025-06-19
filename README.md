@@ -52,18 +52,36 @@ This performs:
 3. Performs single-step VASP optimization on each structure (optional)
 
 ### Optional Flags
-| Flag             | Description                                                        |
-| ---------------- | ------------------------------------------------------------------ |
-| `--out`          | Output directory (default: `results/`)                             |
-| `--skip-vasp`    | Skip the single-step VASP optimization step                        |
-| `--vasp_command` | Custom command for running VASP (default: `mpirun -np 4 vasp_std`) |
+| Argument         | Description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+| `--out`          | Output directory (default: `results/`)                                  |
+| `--skip-vasp`    | Skip the VASP single-step optimization phase                            |
+| `--vasp_command` | VASP command to run (default: `mpirun -np 4 vasp_std`)                  |
+| `--nstruct`      | Total number of structures to generate                                  |
+| `--initpts`      | Explicit number of initial BO points (overrides default logic)          |
+| `--iterpts`      | Explicit number of iterative BO steps (overrides default logic)         |
+| `--opt-dims`     | Optimization dimensions: any of `x`, `y`, `z`, `alpha`, `beta`, `gamma` |
+| `--bounds-x`     | Lower and upper bounds for x-shift (e.g., `--bounds-x 0 4.07`)          |
+| `--bounds-y`     | Lower and upper bounds for y-shift                                      |
+| `--bounds-z`     | Lower and upper bounds for z-shift                                      |
+| `--bounds-alpha` | Lower and upper bounds for α rotation (degrees)                         |
+| `--bounds-beta`  | Lower and upper bounds for β rotation (degrees)                         |
+| `--bounds-gamma` | Lower and upper bounds for γ rotation (degrees)                         |
+| `--model_path`   | Custom MACE model path (optional)                                       |
 
 
 Examples
 ```bash
-adsgen-generate --mol molecule.xyz --surf surface.inp
-adsgen-generate --mol molecule.xyz --surf surface.inp --skip-vasp
-adsgen-generate --mol molecule.xyz --surf surface.inp --vasp_command "srun vasp_std"
+adsgen-generate \
+  --mol molecule.xyz \
+  --surf surface.inp \
+  --nstruct 50 \
+  --opt-dims x y alpha beta \
+  --bounds-x 0 4.07 \
+  --bounds-y 0 4.07 \
+  --bounds-alpha 0 359 \
+  --bounds-beta 0 359 \
+  --vasp_command "mpirun -np 4 vasp_std"
 ```
 
 This outputs:
