@@ -34,7 +34,7 @@ pip install -e .
 This step runs BOSS + MACE to optimize molecular configurations on a surface.
 
 ```bash
-adsgen-generate --mol data/molecule.xyz --surf data/surface.inp
+adsgen-generate --mol molecule.xyz --surf surface.inp
 ```
 
 This produces:
