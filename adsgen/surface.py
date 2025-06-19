@@ -146,6 +146,16 @@ def run_adsorption_optimization(model_path=None):
         safe_parprint(f"⚠️ Postprocessing failed: {e}")
 
     trajectory.close()
+    from ase.io import read, write
+
+    # After BO run and trajectory close
+    mace_structures = read('5D_optimization_trajectory.traj', ':')
+    initial_structures = read('initial_configurations.xyz', ':')
+
+    all_structures = initial_structures + mace_structures
+    write('training_data_mace_opt.xyz', all_structures)
+    print("✅ Combined structures saved to training_data_mace_opt.xyz")
+
     print(f"Trajectory saved to {traj_file}")
     print(f"Log saved to {log_file}")
 

@@ -2,7 +2,15 @@
 
 Machine learning–driven training structure generator for adsorption on surfaces.
 
-This program enables the generation of adsorption geometries using Bayesian optimization with BOSS and a pretrained MACE machine learning potential. It also provides tools to convert these geometries into VASP input folders and compare MACE-predicted energies against DFT values using RMSE, MAE, and energy plots.
+adsgen is a Python tool that generates training structures for molecule–surface systems using a 5D Bayesian optimization (x, y shifts + α, β, γ rotations) with:
+
+- BOSS: Bayesian Optimization Structure Search
+
+- MACE: Machine Learning Potential
+
+- (Optional) VASP: Single-step DFT optimization
+
+It outputs optimized training structures suitable for building machine-learned interatomic potentials.
 
 ---
 
@@ -11,7 +19,7 @@ This program enables the generation of adsorption geometries using Bayesian opti
 This repository contains three key functionalities:
 
 1. Generation of adsorption structures using BOSS + MACE
-2. Conversion of optimized `.traj` files to VASP-ready input folders
+2. Conversion of optimized `.traj` files to VASP-ready input folders (for explicit VASP optimization)
 3. Energy comparison between MACE and DFT using a plotting and CSV export tool
 
 The goal is to assist in generating large, diverse, and relevant training datasets for ML potential development, particularly for molecule–surface systems.
@@ -38,12 +46,31 @@ This step runs BOSS + MACE to optimize molecular configurations on a surface.
 ```bash
 adsgen-generate --mol molecule.xyz --surf surface.inp
 ```
+This performs:
+1. Copies molecule.xyz and surface.inp to results/
+2. Runs BOSS + MACE-based optimization (surface.py)
+3. Performs single-step VASP optimization on each structure (optional)
 
-This produces:
-- results/boss.rst
-- results/5D_optimization_trajectory.traj
-- results/initial_configurations.xyz
-- results/boss_energy_vs_step.png
+### Optional Flags
+| Flag             | Description                                                        |
+| ---------------- | ------------------------------------------------------------------ |
+| `--out`          | Output directory (default: `results/`)                             |
+| `--skip-vasp`    | Skip the single-step VASP optimization step                        |
+| `--vasp_command` | Custom command for running VASP (default: `mpirun -np 4 vasp_std`) |
+
+
+Examples
+```bash
+adsgen-generate --mol molecule.xyz --surf surface.inp
+adsgen-generate --mol molecule.xyz --surf surface.inp --skip-vasp
+adsgen-generate --mol molecule.xyz --surf surface.inp --vasp_command "srun vasp_std"
+```
+
+This outputs:
+- results/initial_configurations.xyz: Structures from BOSS+MACE
+- results/5D_optimization_trajectory.traj: Trajectory of optimizations
+- results/training_data_mace_opt.xyz: Combined data file (input to VASP)
+- results/training_data_vasp_opt.xyz: (Only if VASP is run) DFT-optimized version
 
 ---
 
