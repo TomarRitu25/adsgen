@@ -2,7 +2,7 @@
 
 Machine learning–driven training structure generator for adsorption on surfaces.
 
-adsgen is a Python tool that generates training structures for molecule–surface systems using a 5D Bayesian optimization (x, y shifts + α, β, γ rotations) with:
+adsgen is a Python tool that generates training structures for molecule–surface systems using a Bayesian optimization over flexible degrees of freedom including translations and rotations with:
 
 - BOSS: Bayesian Optimization Structure Search
 
@@ -81,21 +81,23 @@ adsgen-generate \
   --bounds-y 0 4.07 \
   --bounds-alpha 0 359 \
   --bounds-beta 0 359 \
-  --vasp_command "mpirun -np 4 vasp_std"
+  --vasp_command "srun vasp_std"
 ```
 
 This outputs:
 - results/initial_configurations.xyz: Structures from BOSS+MACE
-- results/5D_optimization_trajectory.traj: Trajectory of optimizations
+- results/4D_optimization_trajectory.traj: Trajectory of optimizations
 - results/training_data_mace_opt.xyz: Combined data file (input to VASP)
 - results/training_data_vasp_opt.xyz: (Only if VASP is run) DFT-optimized version
+
+The name of the .traj file automatically reflects the number of optimization dimensions.
 
 ---
 
 ## 2. Convert .traj to VASP Input Folders
 
 ```bash
-adsgen-vaspgen --traj results/5D_optimization_trajectory.traj
+adsgen-vaspgen --traj results/4D_optimization_trajectory.traj
 ```
 **Note:** You must place the INCAR, KPOINTS and POTCAR files in the current working directory before running this command
 
