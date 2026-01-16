@@ -1,36 +1,3 @@
-# Python bytecode
-__pycache__/
-*.py[cod]
-
-# Jupyter/IPython
-.ipynb_checkpoints
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
-
-# Environment folders
-env/
-venv/
-.venv/
-
-# Test caches
-.pytest_cache/
-.mypy_cache/
-
-# Editor config
-.vscode/
-.idea/
-
-# Outputs
-*.traj
-*.log
-*.out
-*.png
-*.csv
-*.txt
-
-# Optional: ignore all results
-results/
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:ce9cddab911e2687c46e043352d5b714f6990fb2b876e3e77176b302f4739666
+size 330

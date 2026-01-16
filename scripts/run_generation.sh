@@ -1,13 +1,3 @@
-#!/bin/bash
-# Simple runner script for adsgen
-
-MOL=$1
-SURF=$2
-
-if [ -z "$MOL" ] || [ -z "$SURF" ]; then
-  echo "Usage: $0 <molecule.xyz> <surface.inp>"
-  exit 1
-fi
-
-adsgen-generate --mol "$MOL" --surf "$SURF"
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:fff6acbbb761acbb67d0729799c49814b7f06ef5f794ab9ef844eed21d9f8b72
+size 210
