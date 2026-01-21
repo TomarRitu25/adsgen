@@ -125,5 +125,5 @@ This generates:
 
 ---
 
-##HB238/hBN adsorption
+## HB238/hBN adsorption
 - Datasets and finetuned model for HB238 adsorption on hBN surface are available in the folder finetuned_models
