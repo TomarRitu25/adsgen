@@ -120,10 +120,4 @@ This generates:
 ## HB238/hBN adsorption
 The folder finetuned_models/ contains three fine-tuned MACE models and their training/test datasets for HB238 molecule adsorbed on hBN surface:
 
-- MACE-1M/: Trained on 1M base data
-
-- MACE-1M2M/: Extended training on 2M
-
-- MACE-1M2M+C/: Includes additional configurations with constraints
-
 You can run structure optimization or PES evaluation on similar systems by using the --model_path flag with one of these fine-tuned models.
