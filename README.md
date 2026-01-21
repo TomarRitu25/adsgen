@@ -1,28 +1,20 @@
 # adsgen
 
-Machine learning–driven training structure generator for adsorption on surfaces.
+Machine learning–driven module for adsorption structure generation and potential energy surface (PES) evaluation of molecules on surfaces.
 
-adsgen is a Python tool that generates training structures for molecule–surface systems using a Bayesian optimization over flexible degrees of freedom including translations and rotations with:
-
-- BOSS: Bayesian Optimization Structure Search
-
-- MACE: Machine Learning Potential
-
-- (Optional) VASP: Single-step DFT optimization
-
-It outputs optimized training structures suitable for building machine-learned interatomic potentials.
+`adsgen` is a Python tool to generate and evaluate adsorption structures of molecules on surfaces using Bayesian optimization over translations and rotations. It can be used with **foundation MACE models** to generate training datasets or with **fine-tuned MACE models** to predict adsorption geometries and energies.
 
 ---
 
 ## Introduction
 
-This repository contains three key functionalities:
+This repository offers three core functionalities:
 
-1. Generation of adsorption structures using BOSS + MACE
-2. Conversion of optimized `.traj` files to VASP-ready input folders (for explicit VASP optimization)
-3. Energy comparison between MACE and DFT using a plotting and CSV export tool
+1. **Generate molecule–surface adsorption structures** using BOSS + MACE  
+2. **PES exploration** for flexible molecule-surface systems (via the same interface)  
+3. Convert `.traj` files to VASP input folders and compare MACE vs DFT energies for benchmarking.
 
-The goal is to assist in generating large, diverse, and relevant training datasets for ML potential development, particularly for molecule–surface systems.
+This tool is meant for researchers working on molecule–surface interactions, adsorption energy landscapes, or building ML-based interatomic potentials.
 
 ---
 
@@ -39,7 +31,7 @@ pip install git+https://github.com/ACEsuit/mace.git
 ```
 ---
 
-## 1. Generate Training Structures
+## 1. Generate Adsorption Structures
 
 This step runs BOSS + MACE to optimize molecular configurations on a surface.
 
@@ -126,4 +118,12 @@ This generates:
 ---
 
 ## HB238/hBN adsorption
-- Datasets and finetuned model for HB238 adsorption on hBN surface are available in the folder finetuned_models
+The folder finetuned_models/ contains three fine-tuned MACE models and their training/test datasets for HB238 molecule adsorbed on hBN surface:
+
+- MACE-1M/: Trained on 1M base data
+
+- MACE-1M2M/: Extended training on 2M
+
+- MACE-1M2M+C/: Includes additional configurations with constraints
+
+You can run structure optimization or PES evaluation on similar systems by using the --model_path flag with one of these fine-tuned models.
