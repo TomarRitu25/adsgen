@@ -121,3 +121,14 @@ This generates:
 The folder finetuned_models/ contains three fine-tuned MACE models and their training/test datasets for HB238 molecule adsorbed on hBN surface:
 
 You can run structure optimization or PES evaluation on similar systems by using the --model_path flag with one of these fine-tuned models.
+
+
+## How to Cite
+
+If you use **adsgen** in your research, please cite the following publications:
+
+1. R. Tomar, T. Bredow, *Machine Learning Accelerated Global Search for Adsorption Geometries of Merocyanine Molecule on Hexagonal Boron Nitride*, **Journal of Computational Chemistry**, 2026, 47 (6), e70332.  
+   DOI: [10.1002/jcc.70332](https://doi.org/10.1002/jcc.70332)
+
+2. R. Tomar, T. Bredow, *HB238 Adsorption on Coinage Metal Surfaces: Insights from a Combined Machine-Learning Interatomic Potential and Bayesian Optimization Framework for Interfacial Electronic Structure*, **The Journal of Physical Chemistry C**, 2026.  
+   DOI: [10.1021/acs.jpcc.5c07480](https://doi.org/10.1021/acs.jpcc.5c07480)
